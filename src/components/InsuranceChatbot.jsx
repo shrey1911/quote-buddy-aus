@@ -5,28 +5,16 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Bot, User, Send } from "lucide-react";
-import { QuoteData } from "./InsuranceQuote";
 
-interface Message {
-  id: string;
-  type: 'bot' | 'user';
-  content: string;
-  timestamp: Date;
-}
-
-interface ChatbotProps {
-  onQuoteComplete: (data: QuoteData) => void;
-}
-
-export function InsuranceChatbot({ onQuoteComplete }: ChatbotProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+export function InsuranceChatbot({ onQuoteComplete }) {
+  const [messages, setMessages] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [quoteData, setQuoteData] = useState<QuoteData>({});
+  const [quoteData, setQuoteData] = useState({});
   const [isTyping, setIsTyping] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [showOptions, setShowOptions] = useState<string[]>([]);
-  const [showDropdown, setShowDropdown] = useState<{options: string[], field: string} | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showOptions, setShowOptions] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(null);
+  const messagesEndRef = useRef(null);
 
   const questions = [
     {
@@ -143,7 +131,7 @@ export function InsuranceChatbot({ onQuoteComplete }: ChatbotProps) {
     }, 1000);
   }, []);
 
-  const addBotMessage = (content: string) => {
+  const addBotMessage = (content) => {
     setIsTyping(true);
     setTimeout(() => {
       setMessages(prev => [...prev, {
@@ -156,7 +144,7 @@ export function InsuranceChatbot({ onQuoteComplete }: ChatbotProps) {
     }, 1500);
   };
 
-  const addUserMessage = (content: string) => {
+  const addUserMessage = (content) => {
     setMessages(prev => [...prev, {
       id: Date.now().toString(),
       type: 'user',
@@ -165,7 +153,7 @@ export function InsuranceChatbot({ onQuoteComplete }: ChatbotProps) {
     }]);
   };
 
-  const handleOptionClick = (option: string) => {
+  const handleOptionClick = (option) => {
     addUserMessage(option);
     setShowOptions([]);
     setShowDropdown(null);
@@ -179,7 +167,7 @@ export function InsuranceChatbot({ onQuoteComplete }: ChatbotProps) {
 
     // Process answer
     const question = questions[currentQuestion];
-    let value: any = option;
+    let value = option;
     
     if (question) {
       // Convert values based on field type
@@ -188,7 +176,7 @@ export function InsuranceChatbot({ onQuoteComplete }: ChatbotProps) {
       } else if (question.field === 'mainPurpose') {
         value = option.includes('Private') ? 'private' : 'business';
       } else if (question.field === 'coverType') {
-        const coverTypeMap: Record<string, string> = {
+        const coverTypeMap = {
           'Comprehensive': 'comprehensive',
           'Third Party Property': 'third-party',
           'Third Party Fire & Theft': 'third-party-fire',
@@ -224,7 +212,7 @@ export function InsuranceChatbot({ onQuoteComplete }: ChatbotProps) {
 
     addUserMessage(inputValue);
     const question = questions[currentQuestion];
-    let value: any = inputValue;
+    let value = inputValue;
     
     if (question) {
       if (question.field === 'age' || question.field === 'licenseAge') {
@@ -250,11 +238,11 @@ export function InsuranceChatbot({ onQuoteComplete }: ChatbotProps) {
     }
   };
 
-  const handleDropdownSelect = (value: string) => {
+  const handleDropdownSelect = (value) => {
     handleOptionClick(value);
   };
 
-  const askQuestion = (questionIndex: number) => {
+  const askQuestion = (questionIndex) => {
     const question = questions[questionIndex];
     setCurrentQuestion(questionIndex);
     

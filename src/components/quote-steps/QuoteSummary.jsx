@@ -5,14 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle, Car, MapPin, Calendar, User, Shield, FileText, Sparkles } from "lucide-react";
 import { format } from "date-fns";
-import { QuoteData } from "../InsuranceQuote";
 
-interface QuoteSummaryProps {
-  quoteData: QuoteData;
-  onBack: () => void;
-}
-
-export function QuoteSummary({ quoteData, onBack }: QuoteSummaryProps) {
+export function QuoteSummary({ quoteData, onBack }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [quoteGenerated, setQuoteGenerated] = useState(false);
 
@@ -24,7 +18,7 @@ export function QuoteSummary({ quoteData, onBack }: QuoteSummaryProps) {
     setQuoteGenerated(true);
   };
 
-  const getCoverTypeName = (type: string) => {
+  const getCoverTypeName = (type) => {
     switch (type) {
       case "comprehensive": return "Comprehensive";
       case "third-party": return "Third Party Property";
@@ -34,7 +28,7 @@ export function QuoteSummary({ quoteData, onBack }: QuoteSummaryProps) {
     }
   };
 
-  const getQuotePrice = (type: string) => {
+  const getQuotePrice = (type) => {
     switch (type) {
       case "comprehensive": return { weekly: 89, annual: 4628 };
       case "third-party": return { weekly: 42, annual: 2184 };
